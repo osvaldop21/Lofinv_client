@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="row mb-3">
+        <h2><span class="nav-text">Análisis de datos</span></h2>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <h3>
+                <a href=""><i class="icon icon-previous"></i></a>
+                <span class="nav-text">ARM & Co.</span>
+            </h3>
+        </div>
+        <div class="col-sm-4">
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">INGRESOS NETOS</h5>
+                <h6 class="card-subtitle mb-2 text-muted">$ 21.324 último mes (USD)</h6>
+              </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">TOTAL ACTIVOS</h5>
+                <h6 class="card-subtitle mb-2 text-muted">$210.132.410 (USD)</h6>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-sm-12">
+            <div class="card mb-3">
+              <div class="row no-gutters">
+                <div class="col-md-6">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Cras justo odio</li>
+                    <li class="list-group-item">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Vestibulum at eros</li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                    <div class="card-header">
+                        <h4 class="card-title">Utilidad último semestres (USD) </br> año actual vs año pasado.</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-8">
+                                <div id="morris-bar-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Total de ventas último semestre (USD) </br>Año actual vs Año pasado</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="sold-product"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
