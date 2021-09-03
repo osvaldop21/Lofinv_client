@@ -1,73 +1,135 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
+{% load mathfilters %}
 
 {% block content %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      <script type="text/javascript">
+        google.charts.load("current", {packages:['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable({{comparacion_puntajes_list|safe}});
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1,
+                           { calc: "stringify",
+                             sourceColumn: 1,
+                             type: "string",
+                             role: "annotation" },
+                           2]);
+
+          var options = {
+            width: 500,
+            height: 400,
+            bar: {groupWidth: "95%"},
+            legend: { position: "center" },
+          };
+          var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
+          chart.draw(view, options);
+      }
+    </script>
 
     <div class="row mb-3">
         <h2><span class="nav-text">Análisis de datos</span></h2>
     </div>
+   <!-- <div class="row">
+        <form >
+            <div class="form-group form-inline">
+                <label for="exampleFormControlSelect1"><h5>Fuente (BD)</h5></label>
+                <select class="form-control mx-sm-3" id="exampleFormControlSelect1">
+                  <option value="00_inversionistas_empresas">Empresas inversionistas</option>
+                  <option value="01_bases_instalados">Bases instalados</option>
+                  <option value="02_sociedades_extranjeras">Sociedades extranjeras</option>
+                  <option value="03_fdi_markets"> FDI Markets</option>
+                  <option value="04_a_gazelle" selected="selected">Gazelle</option>
+                  <option value="05_consolidado_fdi_markets">Consolidado FDI Markets</option>
+                  <option value="06_i_orbis">Orbis</option>
+                  <option value="07_consolidado_orbis">Consolidado Orbis</option>
+                  <option value="08_g_empresas_extranjeras">Empresas extrangeras</option>
+                </select>
+            </div>
+        </form>
+    </div>-->
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <h3>
                 <a href=""><i class="icon icon-previous"></i></a>
-                <span class="nav-text">ARM & Co.</span>
+                <span class="nav-text">Royal Profit. ({{puntaje}})</span>
             </h3>
         </div>
-        <div class="col-sm-4">
-            <div class="card" style="width: 18rem;">
+
+        <div class="col-sm-2">
+            <div class="card" style="width: 100%;">
               <div class="card-body">
-                <h5 class="card-title">INGRESOS NETOS</h5>
-                <h6 class="card-subtitle mb-2 text-muted">$ 21.324 último mes (USD)</h6>
+                <h5 class="card-title">PAIS ORIGEN</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{pais_origen}}</h6>
               </div>
             </div>
         </div>
-        <div class="col-sm-4">
-            <div class="card" style="width: 18rem;">
+        <div class="col-sm-2">
+            <div class="card" style="width: 100%;">
               <div class="card-body">
-                <h5 class="card-title">TOTAL ACTIVOS</h5>
-                <h6 class="card-subtitle mb-2 text-muted">$210.132.410 (USD)</h6>
+                <h5 class="card-title">PAIS DESTINO</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{pais_destino}}</h6>
               </div>
             </div>
         </div>
-    </div>
-    <div class="row ">
-        <div class="col-sm-12">
-            <div class="card mb-3">
-              <div class="row no-gutters">
-                <div class="col-md-6">
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Cras justo odio</li>
-                    <li class="list-group-item">Dapibus ac facilisis in</li>
-                    <li class="list-group-item">Vestibulum at eros</li>
-                  </ul>
-                </div>
-                <div class="col-md-6">
-                    <div class="card-header">
-                        <h4 class="card-title">Utilidad último semestres (USD) </br> año actual vs año pasado.</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-xl-12 col-lg-8">
-                                <div id="morris-bar-chart"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="col-sm-2">
+            <div class="card" style="width: 100%;">
+              <div class="card-body">
+                <h5 class="card-title">SECTOR</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{sector}}</h6>
               </div>
             </div>
         </div>
+        <div class="col-sm-2">
+            <div class="card" style="width: 100%;">
+              <div class="card-body">
+                <h5 class="card-title">EMPLEADOS</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{cantidad_empleados}}</h6>
+              </div>
+            </div>
+        </div>
+
     </div>
     <div class="row">
-        <div class="col-lg-12 col-sm-12">
+        <div class="col-xl-6 col-lg-6 col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Total de ventas último semestre (USD) </br>Año actual vs Año pasado</h4>
+                    <h4 class="card-title">Comparación de empresas</h4>
                 </div>
                 <div class="card-body">
-                    <canvas id="sold-product"></canvas>
+                    <div id="columnchart_values" style="width: 500px; height: 400px;"></div>
                 </div>
             </div>
         </div>
+        <!-- INICIO- SESION DE NOTICIAS -->
+        <div class="col-xl-6 col-lg-6 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Noticias relacionadas</h4>
+                </div>
+                <div class="card-body">
+                    <div class="recent-comment m-t-15">
+                        {% for news in response_request_news|slice:":5" %}
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="{{news.link}}" data-toggle="tooltip" title="{{news.enterprise}}"><img class="media-object mr-3" src="{% static 'images/svg/newspaper.svg' %} " alt="..."></a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading" data-toggle="tooltip" title="{{news.title}}">{{news.title|truncatechars:50}}</h4>
+                                    <p>{{news.snippet}}</p>
+                                    <p class="comment-date">{{new.date_published}}</p>
+                                    <a href="{{news.link}}" class="card-link" data-toggle="tooltip" title="{{news.source}}">Ver noticia</a>
+                                </div>
+                            </div>
+                       {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- FIN - SESION DE NOTICIAS -->
     </div>
 
 
