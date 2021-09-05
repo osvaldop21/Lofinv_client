@@ -1,0 +1,19 @@
+*** Project Description ****
+
+In this application you will be able to see information related to companies in non-mining energy sectors,
+such as total companies reviewed, average income, average employees, countries covered, number of companies by sectors,
+investment, as well as news related to the main companies.
+
+
+
+*** Requirements ***
+
+To install this application on a localhost, you must install first Python 3.0 and Django 3.2.
+To see more about it, go to the following link: https://docs.djangoproject.com/en/3.2/intro/install/
+
+Then, run the following commands to install the requirements:
+pip install requests
+pip install humanize
+
+
+

@@ -75,11 +75,11 @@ def index(request):
                       'ingresos_actividad_param' : ingresos_actividad_param
                   })
 
-def analisis(request):
+def analisis(request, empresa_param):
 
     response_request_data = []
     try:
-        response_request_data = requests.post('http://127.0.0.1:3000/quest', data={'id1': 'Royal profit'}).json()
+        response_request_data = requests.post('http://127.0.0.1:3000/quest', data={'id1': empresa_param}).json()
 
     except:
         response_request_data = 'Error'
@@ -97,12 +97,58 @@ def analisis(request):
         comparacion_puntajes_list.append([comparacion, float(comparacion_puntajes[comparacion]), "3358FF"])
 
     try:
-        response_request_news = requests.post('http://127.0.0.1:3000/news_scrapper', {"id": ['royal profit']}).json()
+        response_request_news = requests.post('http://127.0.0.1:3000/news_scrapper', {"id": empresa_param}).json()
     except:
         response_request_news = 'Error'
 
     return render(request, 'AnalisisDatos.html',
                   {
+                    'nombre': empresa_param,
+                    'cantidad_empleados' : cantidad_empleados,
+                    'comparacion_puntajes_list' : comparacion_puntajes_list,
+                    'pais_destino' : pais_destino,
+                    'pais_origen' : pais_origen,
+                    'puntaje' : puntaje,
+                    'sector': sector,
+                    'response_request_news': response_request_news
+                  })
+
+def analisis_firts(request):
+    empresa = 'error'
+    response_request_data = []
+    response_empresas = []
+    try:
+        try:
+            response_empresas = requests.post('http://127.0.0.1:3000/get_list_companies', data={"id4": 10}).json()
+            empresa = response_empresas[0]['name']
+        except:
+            empresa='error'
+        response_request_data = requests.post('http://127.0.0.1:3000/quest', data={'id1': empresa}).json()
+        print(empresa)
+    except:
+        response_request_data = 'Error'
+
+    cantidad_empleados = response_request_data[0]['cantidad_empleados']
+    comparacion_puntajes = response_request_data[0]['comparacion_puntaje']
+    style_data = {'role': 'style'}
+    comparacion_puntajes_list = [['Empresas', 'Inversión', style_data]]
+    pais_destino = response_request_data[0]['pais_destino']
+    pais_origen = response_request_data[0]['pais_origen']
+    puntaje = response_request_data[0]['puntaje']
+    sector = response_request_data[0]['sector']
+
+    for comparacion in comparacion_puntajes:
+        #color = ["#" + ''.join([random.choice('0123456789ABCDEF') for j in range(6)])]
+        comparacion_puntajes_list.append([comparacion, float(comparacion_puntajes[comparacion]), "3358FF"])
+
+    try:
+        response_request_news = requests.post('http://127.0.0.1:3000/news_scrapper', {"id": empresa}).json()
+    except:
+        response_request_news = 'Error'
+
+    return render(request, 'AnalisisDatos.html',
+                  {
+                    'nombre': empresa,
                     'cantidad_empleados' : cantidad_empleados,
                     'comparacion_puntajes_list' : comparacion_puntajes_list,
                     'pais_destino' : pais_destino,

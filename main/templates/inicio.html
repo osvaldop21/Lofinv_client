@@ -151,7 +151,7 @@
                             <div class="progress-content py-2">
                                 <div class="row">
                                     <div class="col-lg-4">
-                                        <a href="{% url 'Analisis' %}">
+                                        <a href="{% url 'Analisis' empresa_param=empresa.name %}">
                                             <div class="progress-text">{{empresa.name|capfirst}} ({{empresa.source_country|capfirst}})</div>
                                         </a>
                                     </div>
